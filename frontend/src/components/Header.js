@@ -15,7 +15,7 @@ import { logout } from "../actions/userActions";
 /* COMPONENTS */
 import SearchBox from "./SearchBox";
 
-import logo from "../logo.png";
+import logo from "../onePieceLogo.png";
 
 function Header() {
   /* PULLING A PART OF STATE FROM THE ACTUAL STATE IN THE REDUX STORE */
@@ -32,11 +32,12 @@ function Header() {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      {/* <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect> */}
+      <Navbar style={{ backgroundColor: "#c4a484" }} variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
-              <img src={logo} alt="Otaku Shop" />
+              <img style={{width: "200px" , height: "180px"}} src={logo} alt="Otaku Shop" />
             </Navbar.Brand>
           </LinkContainer>
 
