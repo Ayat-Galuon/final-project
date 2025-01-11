@@ -34,7 +34,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.4'
+          python-version: '3.12.6'
           cache: 'pip'
 
       - name: Install dependencies
@@ -62,12 +62,12 @@ jobs:
           key: venv-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             venv-${{ runner.os }}-
-      - name: Upload code
-        uses: actions/upload-artifact@v3
-        with:
-          name: code
-          path: .
-          retention-days: 1
+      # - name: Upload code
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: code
+      #     path: .
+      #     retention-days: 1
 
   test:
     needs: build
@@ -82,7 +82,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.4'
+          python-version: '3.12.6'
           cache: 'pip'
 
       # Restore the cached virtual environment
