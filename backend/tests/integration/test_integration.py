@@ -1,28 +1,43 @@
 import pytest
-from rest_framework.reverse import reverse
-from rest_framework.test import APIClient
+from rest_framework import status
 from base.models import Product
-from rest_framework.authtoken.models import Token #add
-from django.contrib.auth.models import User       #add
+from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 
-def create_product():
-  return Product.objects.create(
-        name=" Product Name ",
-        price=0,
-        brand="Sample brand ",
+
+
+@pytest.fixture
+def sample_product():
+    return Product.objects.create(
+        user= User.objects.create_user(username="testuser", password="testpassword"),
+        name="Product Name",
+        price=0.00,
+        brand="Sample brand",
         countInStock=0,
         category="Sample category",
-        description=" ")
+        description=" "
+    )
 
+@pytest.mark.django_db
+def test_get_products(client):
+    url = '/api/products/'
+    response = client.get(url, {'page': 1, 'keyword': 'Product'})
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert 'products' in data
+    assert isinstance(data['products'], list)
+    assert 'page' in data
+    assert 'pages' in data
 
-
-# Test for getting the product list
-def test_api_product_list():
-    client = APIClient()
-    response = client.get("/api/products/")
-    assert response.status_code == 200
-
-
+@pytest.mark.django_db
+def test_get_top_products(client):
+    url = '/api/products/top/'
+    response = client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert isinstance(data, list)
+    assert len(data) <= 5
+    assert all('rating' in product for product in data)
 # # Test for getting a single product by ID
 # def test_api_product_retrieve():
 #     client = APIClient()
